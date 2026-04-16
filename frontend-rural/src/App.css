@@ -299,7 +299,11 @@
 .home-page {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(223, 205, 165, 0.28), transparent 28%),
+    radial-gradient(
+      circle at top left,
+      rgba(223, 205, 165, 0.28),
+      transparent 28%
+    ),
     linear-gradient(180deg, #f4efe4 0%, #ece4d4 100%);
 }
 
@@ -487,4 +491,71 @@
   .rural-hero-visual {
     min-height: 400px;
   }
+}
+.alojamientos-section {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 24px;
+}
+
+.alojamientos-section h2 {
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: #1f3b2d;
+}
+
+.alojamientos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.alojamiento-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  padding-bottom: 16px;
+}
+
+.alojamiento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.alojamiento-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.alojamiento-card h3 {
+  font-size: 1.2rem;
+  color: #1f3b2d;
+  margin: 16px 16px 8px;
+}
+
+.alojamiento-card p {
+  margin: 0 16px 8px;
+  color: #5c5c5c;
+  font-size: 0.95rem;
+}
+
+.ver-mas-btn {
+  margin: 12px 16px 0;
+  padding: 10px 14px;
+  background-color: #2f6f57;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.ver-mas-btn:hover {
+  background-color: #255846;
 }

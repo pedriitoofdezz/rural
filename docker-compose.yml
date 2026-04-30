@@ -1,0 +1,40 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - rural_net
+
+  backend:
+    build:
+      context: ./back + yml/backend
+    restart: unless-stopped
+    environment:
+      PORT: 3001
+      MONGO_URI: mongodb://mongo:27017/rural
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongo
+    networks:
+      - rural_net
+
+  frontend:
+    build:
+      context: ./frontend-rural
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+    networks:
+      - rural_net
+
+volumes:
+  mongo_data:
+
+networks:
+  rural_net:
+    driver: bridge

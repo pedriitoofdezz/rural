@@ -2,7 +2,7 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <a href="#" className="navbar-logo">
+        <a href="#/" className="navbar-logo">
           <span className="navbar-logo-icon">R</span>
           <div className="navbar-logo-text">
             <strong>RuralStay</strong>
@@ -13,20 +13,20 @@ export default function Navbar() {
 
       <ul className="navbar-links">
         <li>
-          <a href="#">Inicio</a>
+          <a href="#/">Inicio</a>
         </li>
         <li>
-          <a href="#">Alojamientos</a>
+          <a href="#/alojamientos">Alojamientos</a>
         </li>
         <li>
-          <a href="#">Reservas</a>
+          <a href="#/reserva">Reservas</a>
         </li>
         <li>
-          <a href="#">Contacto</a>
+          <a href="#/contacto">Contacto</a>
         </li>
       </ul>
 
-      <a href="#" className="navbar-button">
+      <a href="#/reserva" className="navbar-button">
         Reservar ahora
       </a>
     </nav>

@@ -1,12 +1,29 @@
-export default function SearchBar() {
+import { useState } from "react";
+
+export default function SearchBar({ initialDestination = "", initialGuests = "2" }) {
+  const [destination, setDestination] = useState(initialDestination);
+  const [guests, setGuests] = useState(initialGuests);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const params = new URLSearchParams();
+    if (destination.trim()) params.set("destination", destination.trim());
+    if (guests) params.set("guests", guests);
+
+    window.location.hash = `#/alojamientos${params.toString() ? `?${params}` : ""}`;
+  }
+
   return (
-    <form className="search-bar">
+    <form className="search-bar" onSubmit={handleSubmit}>
       <div className="search-field">
         <label htmlFor="destination">Destino</label>
         <input
           id="destination"
           type="text"
           placeholder="Pirineos, Asturias, Sierra de Cazorla..."
+          value={destination}
+          onChange={(event) => setDestination(event.target.value)}
         />
       </div>
 
@@ -17,7 +34,11 @@ export default function SearchBar() {
 
       <div className="search-field">
         <label htmlFor="guests">Huespedes</label>
-        <select id="guests" defaultValue="2">
+        <select
+          id="guests"
+          value={guests}
+          onChange={(event) => setGuests(event.target.value)}
+        >
           <option value="1">1 huesped</option>
           <option value="2">2 huespedes</option>
           <option value="4">4 huespedes</option>

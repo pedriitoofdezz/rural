@@ -43,3 +43,40 @@ docker compose down -v
 - El frontend se construye con Vite y se sirve con Nginx en el puerto `8080`.
 - Nginx reenvia las peticiones `/api` al backend dentro de la red Docker.
 - El backend espera a que MongoDB responda antes de arrancar.
+
+## Errores y correcciones realizadas
+
+Durante la revision final se detectaron varios problemas de funcionamiento y
+despliegue:
+
+- Los botones de navegacion y reserva no realizaban ninguna accion real. Algunos
+  enlaces usaban `href="#"` y el boton de ver alojamiento solo mostraba un
+  `alert`.
+- La aplicacion no tenia enrutado completo: `App.jsx` cargaba solo la pagina de
+  inicio, por lo que no se podia acceder correctamente a alojamientos, detalle o
+  reserva.
+- El buscador podia dar la sensacion de fallar si se buscaban destinos que no
+  estaban en los datos de prueba, como `Pirineos`. Actualmente los datos mock
+  incluyen alojamientos en `Segovia`, `Asturias` y `Cantabria`.
+- Al probar `Segovia` desde `localhost:8080`, el navegador estaba mostrando un
+  contenedor antiguo creado desde otro `docker-compose.yml`, no la version
+  actual del proyecto.
+- La documentacion de Docker no dejaba suficientemente claro que se debe usar el
+  `docker-compose.yml` de la raiz del repositorio.
+
+Correcciones aplicadas:
+
+- Se implemento navegacion por rutas hash: `#/`, `#/alojamientos`,
+  `#/alojamiento/:id`, `#/reserva/:id` y `#/contacto`.
+- Los botones `Reservar`, `Reservar ahora`, `Ver alojamiento` y los enlaces del
+  menu pasaron a navegar a pantallas reales.
+- Se creo una pantalla de detalle de alojamiento y un formulario de reserva con
+  validaciones basicas.
+- El buscador redirige a la pagina de alojamientos y filtra por nombre,
+  ubicacion y numero de huespedes.
+- Se paro el contenedor antiguo del frontend y se levanto el proyecto completo
+  desde la raiz con `docker compose up --build -d`.
+- Se mejoro Docker Compose con `healthcheck` para MongoDB y espera del backend
+  hasta que la base de datos este disponible.
+- Se verifico el frontend con `npm run lint`, `npm run build`, `docker compose
+  config` y ejecucion del entorno Docker.

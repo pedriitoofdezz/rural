@@ -44,9 +44,9 @@
    9.4. Elementos visuales de confianza y orientacion
 10. Desarrollo de componentes
    10.1. Componente `Navbar`
-   10.2. Componente `HouseCard`
-   10.3. Componente `SearchBar`
-   10.4. Componente `Footer`
+   10.2. Componente `SearchBar`
+   10.3. Componente `Footer`
+   10.4. Paginas principales de la aplicacion
 11. Implementacion de estilos
    11.1. Importacion de hojas de estilo
    11.2. Aplicacion de estilos en React

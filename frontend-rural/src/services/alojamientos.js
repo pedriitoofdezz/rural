@@ -1,16 +1,55 @@
 import { alojamientosMock } from "../mocks/alojamientos";
 
-export async function getAlojamientos() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(alojamientosMock);
-    }, 500);
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+
+function normalizeAlojamiento(alojamiento) {
+  return {
+    id: alojamiento.id || alojamiento._id,
+    nombre: alojamiento.nombre || alojamiento.title,
+    ubicacion: alojamiento.ubicacion || alojamiento.location,
+    precio: alojamiento.precio || alojamiento.pricePerNight,
+    imagen:
+      alojamiento.imagen ||
+      alojamiento.images?.[0] ||
+      "https://picsum.photos/400/250?random=10",
+    capacidad: alojamiento.capacidad || alojamiento.capacity,
+    descripcion: alojamiento.descripcion || alojamiento.description,
+    servicios: alojamiento.servicios || alojamiento.amenities || [],
+  };
+}
+
+async function fetchJson(path, options) {
+  const response = await fetch(`${API_BASE}${path}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    ...options,
   });
+
+  if (!response.ok) {
+    throw new Error(`Error HTTP ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function getAlojamientos() {
+  try {
+    const data = await fetchJson("/api/houses");
+    return data.map(normalizeAlojamiento);
+  } catch {
+    return alojamientosMock;
+  }
 }
 
 export async function getAlojamientoById(id) {
-  const alojamientos = await getAlojamientos();
-  return alojamientos.find((alojamiento) => String(alojamiento.id) === String(id));
+  try {
+    const data = await fetchJson(`/api/houses/${id}`);
+    return normalizeAlojamiento(data);
+  } catch {
+    const alojamientos = await getAlojamientos();
+    return alojamientos.find((alojamiento) => String(alojamiento.id) === String(id));
+  }
 }
 
 export function filterAlojamientos(alojamientos, filters = {}) {
@@ -30,7 +69,6 @@ export function filterAlojamientos(alojamientos, filters = {}) {
 }
 
 export async function createReserva(reserva) {
-  const reservas = JSON.parse(localStorage.getItem("reservas") || "[]");
   const nuevaReserva = {
     id: crypto.randomUUID(),
     status: "confirmada",
@@ -38,6 +76,14 @@ export async function createReserva(reserva) {
     ...reserva,
   };
 
-  localStorage.setItem("reservas", JSON.stringify([...reservas, nuevaReserva]));
-  return nuevaReserva;
+  try {
+    return await fetchJson("/api/bookings", {
+      method: "POST",
+      body: JSON.stringify(nuevaReserva),
+    });
+  } catch {
+    const reservas = JSON.parse(localStorage.getItem("reservas") || "[]");
+    localStorage.setItem("reservas", JSON.stringify([...reservas, nuevaReserva]));
+    return nuevaReserva;
+  }
 }

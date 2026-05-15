@@ -42,6 +42,8 @@ docker compose down -v
 
 - El frontend se construye con Vite y se sirve con Nginx en el puerto `8080`.
 - Nginx reenvia las peticiones `/api` al backend dentro de la red Docker.
+- El frontend consume `/api/houses` y `/api/bookings`; si el backend no esta
+  disponible durante desarrollo, usa los datos mock como respaldo.
 - El backend espera a que MongoDB responda antes de arrancar.
 
 ## Errores y correcciones realizadas
@@ -78,5 +80,10 @@ Correcciones aplicadas:
   desde la raiz con `docker compose up --build -d`.
 - Se mejoro Docker Compose con `healthcheck` para MongoDB y espera del backend
   hasta que la base de datos este disponible.
+- Se conecto el frontend con el backend real mediante `/api`, manteniendo un
+  fallback local para poder seguir probando la interfaz aunque el backend no
+  responda.
+- Se alinearon los datos del backend con los alojamientos del frontend y se
+  corrigio la busqueda por nombre o ubicacion.
 - Se verifico el frontend con `npm run lint`, `npm run build`, `docker compose
   config` y ejecucion del entorno Docker.

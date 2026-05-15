@@ -20,8 +20,10 @@ export function searchHouses(req, res) {
   let result = houses;
 
   if (destination) {
+    const normalizedDestination = destination.toLowerCase();
     result = result.filter((house) =>
-      house.location.toLowerCase().includes(destination.toLowerCase())
+      house.title.toLowerCase().includes(normalizedDestination) ||
+      house.location.toLowerCase().includes(normalizedDestination)
     );
   }
 

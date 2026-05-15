@@ -15,3 +15,6 @@ URL del frontend:
 
 Las peticiones `/api` se envian desde Nginx al servicio `backend` dentro de la
 red Docker.
+
+En desarrollo con Vite, `vite.config.js` tambien redirige `/api` a
+`http://localhost:3001`.

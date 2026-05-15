@@ -6,6 +6,11 @@ services:
       - mongo_data:/data/db
     ports:
       - "27018:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - rural_net
 
@@ -19,7 +24,8 @@ services:
     ports:
       - "3001:3001"
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     networks:
       - rural_net
 

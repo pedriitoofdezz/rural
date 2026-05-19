@@ -1,35 +1,52 @@
-import { houses } from '../data/data.js';
+import House from '../models/House.js';
 
-export function getHouses(req, res) {
-  res.json(houses);
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-export function getHouseById(req, res) {
-  const house = houses.find((item) => item.id === req.params.id);
-
-  if (!house) {
-    return res.status(404).json({ message: 'Alojamiento no encontrado' });
+export async function getHouses(req, res) {
+  try {
+    const houses = await House.find().sort({ id: 1 });
+    res.json(houses);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener alojamientos' });
   }
-
-  res.json(house);
 }
 
-export function searchHouses(req, res) {
-  const { destination, guests } = req.query;
+export async function getHouseById(req, res) {
+  try {
+    const house = await House.findOne({ id: req.params.id });
 
-  let result = houses;
+    if (!house) {
+      return res.status(404).json({ message: 'Alojamiento no encontrado' });
+    }
 
-  if (destination) {
-    const normalizedDestination = destination.toLowerCase();
-    result = result.filter((house) =>
-      house.title.toLowerCase().includes(normalizedDestination) ||
-      house.location.toLowerCase().includes(normalizedDestination)
-    );
+    res.json(house);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener alojamiento' });
   }
+}
 
-  if (guests) {
-    result = result.filter((house) => house.capacity >= Number(guests));
+export async function searchHouses(req, res) {
+  try {
+    const { destination, guests } = req.query;
+    const filters = {};
+
+    if (destination) {
+      const destinationRegex = new RegExp(escapeRegExp(destination), 'i');
+      filters.$or = [
+        { title: destinationRegex },
+        { location: destinationRegex },
+      ];
+    }
+
+    if (guests) {
+      filters.capacity = { $gte: Number(guests) };
+    }
+
+    const houses = await House.find(filters).sort({ id: 1 });
+    res.json(houses);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al buscar alojamientos' });
   }
-
-  res.json(result);
 }

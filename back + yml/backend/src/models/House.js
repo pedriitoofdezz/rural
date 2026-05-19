@@ -1,45 +1,45 @@
 import mongoose from "mongoose";
 
-const bookingSchema = new mongoose.Schema(
+const houseSchema = new mongoose.Schema(
   {
-    houseId: {
+    id: {
       type: String,
       required: true,
+      unique: true,
       index: true,
     },
-    alojamientoNombre: {
+    title: {
       type: String,
       required: true,
       trim: true,
     },
-    guestName: {
+    location: {
       type: String,
       required: true,
       trim: true,
     },
-    guestEmail: {
+    description: {
       type: String,
       required: true,
-      lowercase: true,
       trim: true,
     },
-    checkIn: {
-      type: String,
+    pricePerNight: {
+      type: Number,
       required: true,
+      min: 0,
     },
-    checkOut: {
-      type: String,
-      required: true,
-    },
-    guests: {
+    capacity: {
       type: Number,
       required: true,
       min: 1,
     },
-    status: {
-      type: String,
-      enum: ["confirmada", "cancelada"],
-      default: "confirmada",
+    images: {
+      type: [String],
+      default: [],
+    },
+    amenities: {
+      type: [String],
+      default: [],
     },
   },
   {
@@ -47,4 +47,4 @@ const bookingSchema = new mongoose.Schema(
   },
 );
 
-export default mongoose.model("Booking", bookingSchema);
+export default mongoose.model("House", houseSchema);

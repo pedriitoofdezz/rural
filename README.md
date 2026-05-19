@@ -44,6 +44,8 @@ docker compose down -v
 - Nginx reenvia las peticiones `/api` al backend dentro de la red Docker.
 - El frontend consume `/api/houses` y `/api/bookings`; si el backend no esta
   disponible durante desarrollo, usa los datos mock como respaldo.
+- MongoDB guarda alojamientos, reservas y usuarios. Al arrancar por primera vez,
+  el backend carga automaticamente los alojamientos y el usuario de prueba.
 - El backend espera a que MongoDB responda antes de arrancar.
 
 ## Errores y correcciones realizadas

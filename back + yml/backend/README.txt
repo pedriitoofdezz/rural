@@ -1,4 +1,6 @@
 Backend simple listo para probar con Docker.
+MongoDB guarda alojamientos, reservas y usuarios.
+Al arrancar por primera vez se cargan los alojamientos y el usuario de prueba.
 
 Desde la carpeta raiz del proyecto:
   docker compose up --build

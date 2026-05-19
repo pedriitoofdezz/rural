@@ -31,4 +31,11 @@ export const houses = [
   },
 ];
 
-export const bookings = [];
+export const users = [
+  {
+    name: "Usuario de prueba",
+    email: "test@test.com",
+    password: "123456",
+    role: "admin",
+  },
+];
